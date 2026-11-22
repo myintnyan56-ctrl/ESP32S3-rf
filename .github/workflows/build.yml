@@ -5,15 +5,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: arduino/setup-arduino-cli@v1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
       - run: |
-          arduino-cli config init
-          arduino-cli config add board_manager.additional_urls https://githubusercontent.com
-          arduino-cli core update-index
-          arduino-cli core install esp32:esp32
-          arduino-cli lib install "Adafruit GFX Library" "Adafruit ILI9341" "XPT2046_Touchscreen" "RF24"
-          arduino-cli compile --fqbn esp32:esp32:esp32s3 --output-dir build .
+          pip install platformio
+          pio pkg install -g -p espressif32
+          pio run
       - uses: actions/upload-artifact@v4
         with:
           name: firmware
-          path: build/*.bin
+          path: .pio/build/esp32s3/*.bin
