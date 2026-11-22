@@ -7,8 +7,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: arduino/setup-arduino-cli@v1
       - run: |
-          arduino-cli core update-index --additional-urls https://github.io
-          arduino-cli core install esp32:esp32 --additional-urls https://github.io
+          arduino-cli config init
+          arduino-cli config add board_manager.additional_urls https://githubusercontent.com
+          arduino-cli core update-index
+          arduino-cli core install esp32:esp32
           arduino-cli lib install "Adafruit GFX Library" "Adafruit ILI9341" "XPT2046_Touchscreen" "RF24"
           arduino-cli compile --fqbn esp32:esp32:esp32s3 --output-dir build .
       - uses: actions/upload-artifact@v4
